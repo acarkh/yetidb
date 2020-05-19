@@ -114,8 +114,6 @@ class Database {
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. Created new array to this data.");
     if (this.database.has(key) == false) this.database.set(key, []);
 
-    this.database.set(key, []);
-
     let data = this.database.get(key);
 
     if (!Array.isArray(data)) throw new TypeError("This data isn't Array so couldn't pushed value to this data.");
@@ -141,8 +139,7 @@ class Database {
     if (typeof value != "number") throw new TypeError("\"index\" parameter must be Number.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. Created new array to this data.");
-
-    this.database.set(key, []);
+    if (this.database.has(key) == false) this.database.set(key, []);
 
     let data = this.database.get(key);
     let newData = [];
@@ -172,8 +169,7 @@ class Database {
     if (!isValidValue(value)) throw new TypeError("\"value\" parameter must be String or Number or Boolean or Object or Array.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. Created new array to this data.");
-
-    this.database.set(key, []);
+    if (this.database.has(key) == false) this.database.set(key, []);
 
     let data = this.database.get(key);
     let newData = [];
@@ -205,8 +201,6 @@ class Database {
     if (typeof func != "function") throw new TypeError("\"func\" parameter must be Function.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. The data to be updated is received as \"undefined\".");
-
-    this.database.set(key, []);
 
     let data = this.database.get(key);
 
