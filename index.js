@@ -112,6 +112,7 @@ class Database {
     if (!isValidValue(value)) throw new TypeError("\"value\" parameter must be String or Number or Boolean or Object or Array.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. Created new array to this data.");
+    if (this.database.has(key) == false) this.database.set(key, []);
 
     this.database.set(key, []);
 
