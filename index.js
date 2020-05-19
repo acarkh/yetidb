@@ -165,7 +165,7 @@ class Database {
   delByValue(key, value) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
     if (typeof key != "string") throw new TypeError("\"key\" parameter must be String.");
-    if (typeof index == "undefined") throw new TypeError("\"value\" parameter must be available.");
+    if (typeof value == "undefined") throw new TypeError("\"value\" parameter must be available.");
     if (!isValidValue(value)) throw new TypeError("\"value\" parameter must be String or Number or Boolean or Object or Array.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. Created new array to this data.");
