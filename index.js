@@ -136,7 +136,7 @@ class Database {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
     if (typeof key != "string") throw new TypeError("\"key\" parameter must be String.");
     if (typeof index == "undefined") throw new TypeError("\"index\" parameter must be available.");
-    if (typeof value != "number") throw new TypeError("\"index\" parameter must be Number.");
+    if (typeof index != "number") throw new TypeError("\"index\" parameter must be Number.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. Created new array to this data.");
     if (this.database.has(key) == false) this.database.set(key, []);
