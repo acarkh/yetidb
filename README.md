@@ -13,8 +13,8 @@ A database handler
 ## Example
 
 ```js
-const yeti = require("yetidb");
-const db = new minimize("json", {
+const yetidb = require("yetidb");
+const db = new yetidb("json", {
   "databaseName": "database",
   "autoFile": true
 });
