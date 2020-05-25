@@ -1,19 +1,19 @@
-# minimizedb
+# yetidb
 
 A database handler
 
 ## Links
 
-[for documentation](https://minimizedb.js.org/)
+~~for documentation~~
 
 ## Stats and badges
 
-![npm](https://img.shields.io/npm/dt/minimizedb)
+![npm](https://img.shields.io/npm/dt/yetidb)
 
 ## Example
 
 ```js
-const minimize = require("minimizedb");
+const yeti = require("yetidb");
 const db = new minimize("json", {
   "databaseName": "database",
   "autoFile": true
