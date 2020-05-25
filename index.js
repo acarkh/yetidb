@@ -8,6 +8,7 @@ class Database {
    * @param {Boolean} [options.autoFile=false] If file doesn't exits, create new one. (only for "json" database)
    * @param {Boolean} [options.ignoreWarns=false] Ignore warns?
    * @param {Boolean} [options.readableSaving=false] Save data in readable format to json database?
+   * @param {Boolean} [options.deletingBlankData=false] Delete object when delete all child datas/object in object?
   */
   constructor(type, options) {
     if (type == "json") {

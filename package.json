@@ -1,7 +1,7 @@
 {
   "name": "yetidb",
-  "version": "0.0.1",
-  "description": "A database handler",
+  "version": "0.0.2",
+  "description": "A database handler. Supports JSON and LevelDB. ",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,8 @@
   "keywords": [
     "yeti",
     "yetidb",
-    "jsondb"
+    "jsondb",
+    "leveldb"
   ],
   "author": "imacar",
   "license": "MIT"

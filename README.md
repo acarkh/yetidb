@@ -1,14 +1,16 @@
 # yetidb
 
-A database handler
+A database handler. Supports JSON and [LevelDB](https://npmjs.com/package/yetidb).
 
 ## Links
 
-~~for documentation~~
++ ~~for documentation~~ \[soon\]
++ [NPM page](https.//npmjs.com/package/yetidb)
++ [GitHub page](https.//github.com/imacar/yetidb)
 
 ## Stats and badges
 
-![npm](https://img.shields.io/npm/dt/yetidb)
+![npm downloads](https://img.shields.io/npm/dt/yetidb) | ![open issues](https://img.shields.io/github/issues-raw/imacar/yetidb)
 
 ## Example
 

@@ -1,6 +1,23 @@
 const { isObject, setObject, getObject, deleteObject, toDataFromString } = require("../util");
 let deasync, levelup, leveldown;
 
+function all(database) {
+  let data = deasync(function (obj, cb) {
+    let allData = {};
+
+    obj.database.createReadStream().on("data", function (data) {
+      let val = JSON.parse(data.value.toString());
+      allData[data.key.toString()] = toDataFromString(val.data, val.type);
+    }).on("end", function () {
+      cb(null, allData);
+    })
+  })({
+    "database": database
+  });
+
+  return data;
+}
+
 module.exports = class {
   constructor(options) {
     if (!isObject(options)) throw new TypeError("\"options\" parameter must be Object.");
@@ -64,7 +81,20 @@ module.exports = class {
     if (!key.includes(".")) {
       this.database.del(key);
     } else {
-      let data = deleteObject(this.all()[key.split(".")[0]], key.split(".").slice(1).join("."));
+      if (!this.has(key.split(".")[0])) return false;
+
+      let data = deleteObject(this.all(), key);
+      data = data[key.split(".")[0]];
+
+      if (this.deletingBlankData == true) {
+        for (let i = 0; i < key.split(".").slice(1).length; i++) {
+          let newGet = getObject(data, key.split(".").slice(1, -(i + 1)).join("."));
+          if ((isObject(newGet) == true) && (Object.keys(newGet) == 0)) {
+            data = deleteObject(data, key.split(".").slice(1, -(i + 1)).join("."));
+          }
+        }
+      }
+
       this.set(key.split(".")[0], data);
     }
 
@@ -72,19 +102,7 @@ module.exports = class {
   }
 
   all() {
-    let data = deasync(function (obj, cb) {
-      let all = {};
-
-      obj.database.createReadStream().on("data", function (data) {
-        let val = JSON.parse(data.value.toString());
-        all[data.key.toString()] = toDataFromString(val.data, val.type);
-      }).on("end", function () {
-        cb(null, all);
-      })
-    })({
-      "database": this.database
-    });
-
-    return data;
+    all(this.database);
+    return all(this.database);
   }
 }
