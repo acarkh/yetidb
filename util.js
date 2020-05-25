@@ -2,6 +2,16 @@ function isObject(data) {
   return (!Array.isArray(data) && !(data instanceof Map) && (typeof data == "object"));
 }
 
+module.exports.toDataFromString = function (data, type) {
+  if (type == "object") {
+    return data;
+  } else if (type == "string") {
+    return data;
+  } else {
+    return eval(data);
+  }
+}
+
 module.exports.isObject = isObject;
 
 module.exports.isValidValue = function (value) {

@@ -2,7 +2,7 @@ const { isValidValue } = require("./util");
 
 class Database {
   /**
-   * @param {"json"} type Type of the database
+   * @param {"json"|"level"} type Type of the database
    * @param {Object} options Options of the database
    * @param {String} options.databaseName Name of the database
    * @param {Boolean} [options.autoFile=false] If file doesn't exits, create new one.
@@ -12,6 +12,10 @@ class Database {
   constructor(type, options) {
     if (type == "json") {
       let JSONDatabase = require("./databases/JSONDatabase");
+
+      this.database = new JSONDatabase(options);
+    } else if (type == "level") {
+      let JSONDatabase = require("./databases/LevelDatabase");
 
       this.database = new JSONDatabase(options);
     }

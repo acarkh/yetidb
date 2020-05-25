@@ -40,8 +40,6 @@ module.exports = class {
     let data = fs.readFileSync(`./databases/${this.databaseName}.json`, "utf8");
     data = setObject(JSON.parse(data), key, value);
 
-    if ((typeof value == "undefined") && (!this.ignoreWarns)) console.warn("\"value\" parameter shouldn't be undefined.");
-
     if (this.readableSaving == true) {
       fs.writeFileSync(`./databases/${this.databaseName}.json`, JSON.stringify(data, null, 2));
     } else {
