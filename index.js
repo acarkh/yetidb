@@ -195,7 +195,6 @@ class Database {
     return this.database.set(key, newData);
   }
 
-
   /**
    * Sets element from data in created database by index.
    * @param {String} key
@@ -250,7 +249,9 @@ class Database {
     if (typeof func == "undefined") throw new TypeError("\"func\" parameter must be available.");
     if (typeof func != "function") throw new TypeError("\"func\" parameter must be Function.");
 
-    if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. The data to be updated is received as \"undefined\".");
+    if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) {
+      console.warn("This data isn't available. The data to be updated is received as \"undefined\".");
+    }
 
     let data = this.database.get(key);
 
@@ -273,8 +274,7 @@ class Database {
     if (typeof value != "number") throw new TypeError("\"value\" parameter must be Number.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. The data to be added is received as 0.");
-
-    this.database.set(key, 0);
+    if (this.database.has(key) == false) this.database.set(key, 0);
 
     let data = this.database.get(key);
 
@@ -297,8 +297,7 @@ class Database {
     if (typeof value != "number") throw new TypeError("\"value\" parameter must be Number.");
 
     if ((this.database.has(key) == false) && (this.database.ignoreWarns == false)) console.warn("This data isn't available. The data to be subtracted is received as 0.");
-
-    this.database.set(key, 0);
+    if (this.database.has(key) == false) this.database.set(key, 0);
 
     let data = this.database.get(key);
 
