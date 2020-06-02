@@ -1,5 +1,3 @@
-// from
-
 type Options = {
   autoFile?: boolean | true;
   ignoreWarns?: boolean | false;

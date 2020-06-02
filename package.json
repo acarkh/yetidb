@@ -1,17 +1,14 @@
 {
   "name": "yetidb",
-  "version": "0.0.3",
-  "description": "A database handler. Supports JSON and LevelDB. ",
+  "version": "0.0.4",
+  "description": "A database handler. Supports JSON, LevelDB and YAML. ",
   "main": "index.js",
-  "types": "./index.t.ts",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "keywords": [
     "yeti",
     "yetidb",
     "jsondb",
-    "leveldb"
+    "leveldb",
+    "yamldb"
   ],
   "author": "imacar",
   "license": "MIT"
