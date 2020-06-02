@@ -89,7 +89,7 @@ module.exports = class {
       if (this.deletingBlankData == true) {
         for (let i = 0; i < key.split(".").slice(1).length; i++) {
           let newGet = getObject(data, key.split(".").slice(1, -(i + 1)).join("."));
-          if ((isObject(newGet) == true) && (Object.keys(newGet) == 0)) {
+          if ((isObject(newGet) == true) && (Object.keys(newGet).length == 0)) {
             data = deleteObject(data, key.split(".").slice(1, -(i + 1)).join("."));
           }
         }

@@ -14,7 +14,7 @@ module.exports = class {
 
     this.databaseName = options.databaseName;
     this.ignoreWarns = ((typeof options.ignoreWarns != "undefined") ? options.ignoreWarns : false);
-    this.autoFile = ((typeof options.autoFile != "undefined") ? options.autoFile : false);
+    this.autoFile = ((typeof options.autoFile != "undefined") ? options.autoFile : true);
     this.readableSaving = ((typeof options.readableSaving != "undefined") ? options.readableSaving : false);
     this.deletingBlankData = ((typeof options.deletingBlankData != "undefined") ? options.deletingBlankData : false);
 
@@ -70,7 +70,8 @@ module.exports = class {
     if (this.deletingBlankData == true) {
       for (let i = 0; i < key.split(".").length; i++) {
         let newGet = getObject(data, key.split(".").slice(0, -(i + 1)).join("."));
-        if ((isObject(newGet) == true) && (Object.keys(newGet) == 0)) {
+
+        if ((isObject(newGet) == true) && (Object.keys(newGet).length == 0)) {
           data = deleteObject(data, key.split(".").slice(0, -(i + 1)).join("."));
         }
       }

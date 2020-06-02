@@ -3,6 +3,7 @@
   "version": "0.0.3",
   "description": "A database handler. Supports JSON and LevelDB. ",
   "main": "index.js",
+  "types": "./index.t.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,14 +1,18 @@
 const { isValidValue } = require("./util");
 
+/**
+ * @typedef {Object} Options
+ * @property {String} databaseName Name of the database
+ * @property {Boolean} [autoFile=true] If file doesn't exits, create new one. (only for "json" and "yaml" database)
+ * @property {Boolean} [ignoreWarns=false] Ignore warns?
+ * @property {Boolean} [readableSaving=false] Save data in readable format to database? (only for "json" database)
+ * @property {Boolean} [deletingBlankData=false] Delete object when delete all child datas/object in object?
+*/
+
 class Database {
   /**
-   * @param {"json"|"level"} type Type of the database
-   * @param {Object} options Options of the database
-   * @param {String} options.databaseName Name of the database
-   * @param {Boolean} [options.autoFile=false] If file doesn't exits, create new one. (only for "json" database)
-   * @param {Boolean} [options.ignoreWarns=false] Ignore warns?
-   * @param {Boolean} [options.readableSaving=false] Save data in readable format to json database?
-   * @param {Boolean} [options.deletingBlankData=false] Delete object when delete all child datas/object in object?
+   * @param {"json"|"level"|"yaml"} type Type of the database
+   * @param {Options} options Options of the database
   */
   constructor(type, options) {
     if (type == "json") {
@@ -16,9 +20,13 @@ class Database {
 
       this.database = new JSONDatabase(options);
     } else if (type == "level") {
-      let JSONDatabase = require("./databases/LevelDatabase");
+      let LevelDatabase = require("./databases/LevelDatabase");
 
-      this.database = new JSONDatabase(options);
+      this.database = new LevelDatabase(options);
+    } else if (type == "yaml") {
+      let YAMLDatabase = require("./databases/YAMLDatabase");
+
+      this.database = new YAMLDatabase(options);
     }
   }
 
@@ -26,7 +34,7 @@ class Database {
    * Sets data in created database.
    * @param {String} key
    * @param {Number|String|Boolean|Object|Array} value
-   * @returns {Number|String|Boolean|Object|Array}
+   * @returns {any}
    * @example
    * db.set("test.okey", 12); // {"test": {"okey": 12}}
   */
@@ -36,7 +44,9 @@ class Database {
     if (typeof value == "undefined") throw new TypeError("\"value\" parameter must be available.");
     if (!isValidValue(value)) throw new TypeError("\"value\" parameter must be String or Number or Boolean or Object or Array.");
 
-    return this.database.set(key, value);
+    this.database.set(key, value);
+
+    return this.database.get(key);
   }
 
   /**
@@ -70,7 +80,7 @@ class Database {
   /**
    * Gets data from created database.
    * @param {String} key
-   * @returns {Number|String|Boolean|Object|Array}
+   * @returns {any}
    * @example
    * db.set("test.okey", 12);
    * db.get("test"); // {"okey": 12}
@@ -100,7 +110,7 @@ class Database {
   /**
    * Gets data from created database. Clone of {@link Database#get get} funtion.
    * @param {String} key
-   * @returns {Number|String|Boolean|Object|Array}
+   * @returns {any}
   */
   fetch(key) {
     return this.get(key);
@@ -109,11 +119,12 @@ class Database {
   /**
    * Pushs element to data in created database.
    * @param {String} key
-   * @param {Number|String|Boolean|Object|Array} value
+   * @param {any} value
    * @returns {Array}
    * @example
    * db.set("test.hello", []);
    * db.push("test.hello", 12); // [12]
+   * db.get("test.hello"); // [12]
   */
   push(key, value) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -129,8 +140,9 @@ class Database {
     if (!Array.isArray(data)) throw new TypeError("This data isn't Array so couldn't pushed value to this data.");
 
     data.push(value);
+    this.database.set(key, data)
 
-    return this.database.set(key, data);
+    return data;
   }
 
   /**
@@ -141,6 +153,7 @@ class Database {
    * @example
    * db.get("test"); // [12, 21, 32]
    * db.delByIndex("test", 1); // [12, 32]
+   * db.get("test"); // [12, 32]
   */
   delByIndex(key, index) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -171,6 +184,7 @@ class Database {
    * @example
    * db.get("test"); // [12, 21, 32]
    * db.delByValue("test", 21); // [12, 32]
+   * db.get("test"); // [12, 32]
   */
   delByValue(key, value) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -192,7 +206,9 @@ class Database {
       if (element != value) newData.push(element);
     }
 
-    return this.database.set(key, newData);
+    this.database.set(key, newData);
+
+    return newData;
   }
 
   /**
@@ -204,6 +220,7 @@ class Database {
    * @example
    * db.get("test"); // [12, 21, 32]
    * db.setByIndex("test", 2, "test lol"); // [12, 21, "test lol"]
+   * db.get("test"); // [12, 21, "test lol"]
   */
   setByIndex(key, index, value) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -231,17 +248,20 @@ class Database {
       }
     }
 
-    return this.database.set(key, newData);
+    this.database.set(key, newData)
+
+    return newData;
   }
 
   /**
    * Updates data in created database.
    * @param {String} key
    * @param {Function} func
-   * @returns {Number|String|Boolean|Object|Array}
+   * @returns {any}
    * @example
    * db.get("test"); // 12
    * db.update("test", (x => x / 2)); // 6
+   * db.get("test"); // 6
   */
   update(key, func) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -254,8 +274,10 @@ class Database {
     }
 
     let data = this.database.get(key);
+    this.database.set(key, func(data));
+    data = this.database.get(key);
 
-    return this.database.set(key, func(data));
+    return data;
   }
 
   /**
@@ -266,6 +288,7 @@ class Database {
    * @example
    * db.set("test", 12);
    * db.add("test", 12); // 24
+   * db.get("test"); // 24
   */
   add(key, value) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -277,8 +300,10 @@ class Database {
     if (this.database.has(key) == false) this.database.set(key, 0);
 
     let data = this.database.get(key);
+    this.database.set(key, (data + value));
+    data = this.database.get(key);
 
-    return this.database.set(key, (data + value));
+    return data;
   }
 
   /**
@@ -287,8 +312,9 @@ class Database {
    * @param {Number} value
    * @returns {Number}
    * @example
-   * db.get("test");
+   * db.set("test", 12);
    * db.subtract("test", 12); // 0
+   * db.get("test"); // 0
   */
   subtract(key, value) {
     if (typeof key == "undefined") throw new TypeError("\"key\" parameter must be available.");
@@ -300,8 +326,10 @@ class Database {
     if (this.database.has(key) == false) this.database.set(key, 0);
 
     let data = this.database.get(key);
+    this.database.set(key, (data - value));
+    data = this.database.get(key);
 
-    return this.database.set(key, (data - value));
+    return data;
   }
 
   /**
