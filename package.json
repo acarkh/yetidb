@@ -1,15 +1,19 @@
 {
-  "name": "yetidb",
-  "version": "0.0.4",
-  "description": "A database handler. Supports JSON, LevelDB and YAML. ",
-  "main": "index.js",
+  "name": "amidb",
+  "version": "1.0.0-dev",
+  "description": "A database handler that supports JSON, LevelDB, YAML and more... ",
+  "main": "./index.js",
   "keywords": [
     "yeti",
     "yetidb",
     "jsondb",
     "leveldb",
-    "yamldb"
+    "yamldb",
+    "amidb"
   ],
-  "author": "imacar",
+  "author": {
+    "name": "acarkh",
+    "email": "acar.khm@gmail.com"
+  },
   "license": "MIT"
 }
